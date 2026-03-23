@@ -42,21 +42,17 @@ fun JurosScreen(
 //    var capital by remember {
 //        mutableStateOf("")
 //    }
-    val capital by jurosScreenViewModel.captal.observeAsState(initial = "")
+    val capital by jurosScreenViewModel.capital.observeAsState(initial = "")
+
+    val taxa by jurosScreenViewModel.taxa.observeAsState(initial = "")
+
+    val tempo by jurosScreenViewModel.tempo.observeAsState(initial = "")
+
+    val juros by jurosScreenViewModel.juros.observeAsState(initial = 0.0)
+
+    val montante by jurosScreenViewModel.montante.observeAsState(initial = 0.0)
 
 
-    var taxa by remember {
-        mutableStateOf("")
-    }
-    var tempo by remember {
-        mutableStateOf("")
-    }
-    var juros by remember {
-        mutableDoubleStateOf(0.0)
-    }
-    var montante by remember {
-        mutableDoubleStateOf(0.0)
-    }
     Column (
         modifier = modifier.fillMaxSize(),
     ) {
@@ -112,7 +108,7 @@ fun JurosScreen(
                             corTema = corTema,
                             value = capital,
                             atualizarValor = {
-                                jurosScreenViewModel.onCaptalChanged(it)
+                                jurosScreenViewModel.onCapitalChanged(it)
                             }
                         )
 
@@ -124,7 +120,7 @@ fun JurosScreen(
                             corTema = corTema,
                             value = taxa,
                             atualizarValor = {
-                                taxa = it
+                               jurosScreenViewModel.onTaxaChanged(it)
                             }
                         )
 
@@ -136,22 +132,17 @@ fun JurosScreen(
                             corTema = corTema,
                             value = tempo,
                             atualizarValor = {
-                                tempo = it
+                                jurosScreenViewModel.onTempoChanged(it)
                             }
                         )
 
                         Button (
                             onClick = {
-                                juros = calcularJuros(
-                                    capital = capital.toDouble(),
-                                    taxa = taxa.toDouble(),
-                                    tempo = tempo.toDouble()
-                                )
 
-                                montante = calcularMontante(
-                                    capital = capital.toDouble(),
-                                    juros = juros
-                                )
+                                jurosScreenViewModel.calcularJurosInvestimento()
+                                    jurosScreenViewModel.calcularMontanteInvestimento()
+
+
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(144, 80, 187, 190)
